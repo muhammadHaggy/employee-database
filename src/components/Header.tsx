@@ -1,7 +1,7 @@
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 export const Header = () => 
-    <header className=" justify-between items-center relative flex py-4 px-4">
+    <header className="mt-4 justify-between items-center relative flex py-4 px-4">
         <h1 className='text-2xl'>
             Manage Employees
         </h1>
