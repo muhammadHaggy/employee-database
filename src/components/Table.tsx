@@ -17,7 +17,7 @@ export const Table = ({ data }: Props) =>
                 </tr>
             </thead>
             <tbody>
-                {data.map(employee => <Row name={employee.fullName} email={employee.email} address={employee.address} phoneNumber={employee.phoneNumber} />)}
+                {data.map(employee => <Row key={employee.id} name={employee.fullName} email={employee.email} address={employee.address} phoneNumber={employee.phoneNumber} />)}
 
             </tbody>
         </table>

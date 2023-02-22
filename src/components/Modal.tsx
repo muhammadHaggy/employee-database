@@ -1,9 +1,40 @@
 import DoneIcon from '@mui/icons-material/Done';
+import { FormEventHandler, MouseEventHandler, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { APIBASEURL } from '../constants/url';
+import { Employee } from '../models/Employee';
+import { useForm, SubmitHandler } from 'react-hook-form';
 interface Props {
     isDisplay: boolean,
     setDisplay: Function,
 }
+interface CreateEmployee {
+    fullName: string;
+    email: string;
+    address: string;
+    phoneNumber: string;
+}
+
 export const Modal: React.FunctionComponent<Props> = (props) => {
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<CreateEmployee>();
+    const queryClient = useQueryClient();
+    
+
+    const addEmployee = useMutation((data:CreateEmployee) => {
+        return fetch(APIBASEURL + 'employees', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(Object.entries(data))
+        })
+    }, {
+        onSuccess: ()=> queryClient.invalidateQueries("employeesData")
+    })
+    
+
+    const onSubmit: SubmitHandler<CreateEmployee> = data => addEmployee.mutate(data);
+    
     if (!props.isDisplay) {
         return <></>
     }
@@ -17,26 +48,26 @@ export const Modal: React.FunctionComponent<Props> = (props) => {
                     </button>
                     <div className="px-6 py-6 lg:px-8">
                         <h3 className="mb-4 text-xl font-medium text-gray-900 ">Add Employee</h3>
-                        <form className="space-y-6" action="#">
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" action="#">
                             <div>
                                 <label htmlFor="fullname" className="block mb-2 text-sm font-medium text-gray-900 ">Full name</label>
-                                <input name="fullname" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    " placeholder="Ferdy Sambo" required />
+                                <input id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    " placeholder="Ferdy Sambo" required {...register("fullName")}/>
                             </div>
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                                <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@company.com" required />
+                                <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@company.com" required {...register("email")}/>
                             </div>
                             <div>
                                 <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 ">Address</label>
-                                <input name="address" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder='Muria Living Depok' required />
+                                <input id="address" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder='Muria Living Depok' required {...register("address")}/>
                             </div>
                             <div>
                                 <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 ">Phone</label>
-                                <input name="phone" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder='0878721212' required />
+                                <input id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder='0878721212' required {...register("phoneNumber")}/>
                             </div>
-                            
+
                             <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center  :bg-blue-700 :ring-blue-800">Submit</button>
-                            
+
                         </form>
                     </div>
                 </div>
