@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Header } from "../components/Header";
 import { Layout } from "../components/Layout";
 import { Modal } from "../components/Modal";
@@ -13,17 +13,25 @@ import { Employee } from "../models/Employee";
 
 const Home: NextPage = () => {
   const [isDisplayModal, setDisplayModal] = useState(false);
-  const { isLoading, error, data } = useQuery('employeesData', ():Promise<Employee[]> => fetch(APIBASEURL + 'employees').then(res => res.json()))
+  const { isLoading, error, data } = useQuery('employeesData', (): Promise<Employee[]> => fetch(APIBASEURL + 'employees').then(res => res.json()))
+  const queryClient = useQueryClient()
+  const deleteEmployee = useMutation((id: number) => {
+    return fetch(APIBASEURL + 'employees' + `/${id}`, {
+      method: 'DELETE',
+    })
+  }, {
+    onSuccess: () => queryClient.invalidateQueries("employeesData")
+  })
   if (error) {
     return <h1>Error</h1>
   }
-  
+
   return (
     <Layout>
       <Header setDisplayModal={(isDisplay: boolean) => setDisplayModal(isDisplay)} />
       <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
       {isLoading && <h1>Loading ...</h1>}
-      {!isLoading && <Table data={data!}/>}
+      {!isLoading && <Table deleteEmployee={(id)=>deleteEmployee.mutate(id)} data={data!} />}
       <Modal isDisplay={isDisplayModal} setDisplay={(isDisplay: boolean) => setDisplayModal(isDisplay)} />
     </Layout>
   );
