@@ -1,6 +1,10 @@
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-export const Table = () =>
+import { Employee } from '../models/Employee';
+interface Props {
+    data: Employee[]
+}
+export const Table = ({ data }: Props) =>
     <div className="relative overflow-x-auto">
         <table className="table-auto w-full text-sm text-left">
             <thead className="text-s font-bold text-gray-700 uppercase bg-gray-50 ">
@@ -13,8 +17,7 @@ export const Table = () =>
                 </tr>
             </thead>
             <tbody>
-                <Row name="Haggy" email="hagy@gmail.com" address="patimura" phoneNumber="08142213112" />
-                <Row name="Haggy" email="hagy@gmail.com" address="patimura" phoneNumber="08142213112" />
+                {data.map(employee => <Row name={employee.fullName} email={employee.email} address={employee.address} phoneNumber={employee.phoneNumber} />)}
 
             </tbody>
         </table>
