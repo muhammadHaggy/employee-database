@@ -1,5 +1,5 @@
 
-function updateOptions(options: any) {
+function updateOptions(options: RequestInit) {
   const update = { ...options };
   if (localStorage.jwt) {
     update.headers = {
