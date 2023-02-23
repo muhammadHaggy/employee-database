@@ -1,6 +1,6 @@
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 interface Props {
-    setDisplayModal: Function
+    setDisplayModal: (b:boolean ) => void;
 }
 export const Header: React.FunctionComponent<Props> = (props) => 
     <header className="mt-4 justify-between items-center relative flex py-4 px-4">

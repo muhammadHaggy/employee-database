@@ -8,7 +8,7 @@ import fetcher from "../utils/fetcher"
 
 interface Props {
     isDisplay: boolean,
-    setDisplay: Function,
+    setDisplay: (b:boolean)=> void;
 }
 interface CreateEmployee {
     fullName: string;
