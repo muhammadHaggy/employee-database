@@ -1,1 +1,1 @@
-export const APIBASEURL = 'http://localhost:3000/'
+export const APIBASEURL = 'https://employee-database-be-production.up.railway.app/'
