@@ -10,10 +10,6 @@ function updateOptions(options: RequestInit) {
   return update;
 }
 
-/**
-* @param {RequestInfo | URL} url
-* @param {{ method: string; headers?: { 'Content-Type': string; }; body?: URLSearchParams; }} options
-*/
 export default function fetcher(url: RequestInfo | URL, options: { method: string; headers?: { 'Content-Type': string; }; body?: URLSearchParams; }) {
   return fetch(url, updateOptions(options));
 }
