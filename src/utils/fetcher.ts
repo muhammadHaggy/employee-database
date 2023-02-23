@@ -12,7 +12,7 @@ function updateOptions(options: RequestInit) {
 const getLocalStorageItem = (key: string): string => {
   const jwt = window.localStorage.getItem(key)
   if (jwt !== null){
-    return JSON.parse(jwt)
+    return jwt
   } else {
     return ""
   }
