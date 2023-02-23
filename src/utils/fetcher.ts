@@ -1,15 +1,22 @@
 
 function updateOptions(options: RequestInit) {
   const update = { ...options };
-  if (localStorage.jwt) {
+  if (getLocalStorageItem('jwt') !== "") {
     update.headers = {
       ...update.headers,
-      Authorization: `Bearer ${localStorage.jwt}`,
+      Authorization: `Bearer ${getLocalStorageItem('jwt')}`,
     };
   }
   return update;
 }
-
+const getLocalStorageItem = (key: string): string => {
+  const jwt = window.localStorage.getItem(key)
+  if (jwt !== null){
+    return JSON.parse(jwt)
+  } else {
+    return ""
+  }
+}
 export default function fetcher(url: RequestInfo | URL, options: { method: string; headers?: { 'Content-Type': string; }; body?: URLSearchParams; }) {
   return fetch(url, updateOptions(options));
 }
