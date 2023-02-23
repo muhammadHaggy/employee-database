@@ -4,6 +4,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import { APIBASEURL } from '../constants/url';
 import { Employee } from '../models/Employee';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import fetcher from "../utils/fetcher"
+
 interface Props {
     isDisplay: boolean,
     setDisplay: Function,
@@ -21,7 +23,7 @@ export const Modal: React.FunctionComponent<Props> = (props) => {
     
 
     const addEmployee = useMutation((data:CreateEmployee) => {
-        return fetch(APIBASEURL + 'employees', {
+        return fetcher(APIBASEURL + 'employees', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

@@ -9,14 +9,14 @@ import { Modal } from "../components/Modal";
 import { Table } from "../components/Table";
 import { APIBASEURL } from "../constants/url";
 import { Employee } from "../models/Employee";
-
+import fetcher from "../utils/fetcher"
 
 const Home: NextPage = () => {
   const [isDisplayModal, setDisplayModal] = useState(false);
   const { isLoading, error, data } = useQuery('employeesData', (): Promise<Employee[]> => fetch(APIBASEURL + 'employees').then(res => res.json()))
   const queryClient = useQueryClient()
   const deleteEmployee = useMutation((id: number) => {
-    return fetch(APIBASEURL + 'employees' + `/${id}`, {
+    return fetcher(APIBASEURL + 'employees' + `/${id}`, {
       method: 'DELETE',
     })
   }, {

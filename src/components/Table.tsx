@@ -2,6 +2,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Employee } from '../models/Employee';
 import { UseMutationResult } from 'react-query';
+import fetcher from "../utils/fetcher"
+
 interface Props {
     data: Employee[],
     deleteEmployee: (a:number)=> void;
