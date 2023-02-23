@@ -27,13 +27,15 @@ const Home: NextPage = () => {
   }
 
   return (
-    <Layout>
-      <Header setDisplayModal={(isDisplay: boolean) => setDisplayModal(isDisplay)} />
-      <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
-      {isLoading && <h1>Loading ...</h1>}
-      {!isLoading && <Table deleteEmployee={(id)=>deleteEmployee.mutate(id)} data={data!} />}
+    <>
       <Modal isDisplay={isDisplayModal} setDisplay={(isDisplay: boolean) => setDisplayModal(isDisplay)} />
-    </Layout>
+      <Layout>
+        <Header setDisplayModal={(isDisplay: boolean) => setDisplayModal(isDisplay)} />
+        <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
+        {isLoading && <h1>Loading ...</h1>}
+        {!isLoading && <Table deleteEmployee={(id) => deleteEmployee.mutate(id)} data={data!} />}
+      </Layout>
+    </>
   );
 };
 
