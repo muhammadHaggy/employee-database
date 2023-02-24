@@ -52,9 +52,21 @@ export const Modal: React.FunctionComponent<Props> = (props) => {
     }, {
         onSuccess: ()=> queryClient.invalidateQueries("employeesData")
     })
+
+    const updateEmployee = useMutation((data:CreateEmployee) => {
+        return fetcher(APIBASEURL + 'employees' + `/${props.selectedEmployeeId}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(Object.entries(data))
+        })
+    }, {
+        onSuccess: ()=> queryClient.invalidateQueries("employeesData")
+    })
     
 
-    const onSubmit: SubmitHandler<CreateEmployee> = data => addEmployee.mutate(data);
+    const onSubmit: SubmitHandler<CreateEmployee> = data => isEditMode ? updateEmployee.mutate(data) : addEmployee.mutate(data);
     
     if (!props.isDisplay) {
         return <></>
