@@ -1,5 +1,5 @@
 import DoneIcon from '@mui/icons-material/Done';
-import { FormEventHandler, MouseEventHandler, useState } from 'react';
+import { FormEventHandler, MouseEventHandler, useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { APIBASEURL } from '../constants/url';
 import { Employee } from '../models/Employee';
@@ -9,6 +9,8 @@ import fetcher from "../utils/fetcher"
 interface Props {
     isDisplay: boolean,
     setDisplay: (b:boolean)=> void;
+    employees: Employee[],
+    selectedEmployeeId: number
 }
 interface CreateEmployee {
     fullName: string;
@@ -18,8 +20,25 @@ interface CreateEmployee {
 }
 
 export const Modal: React.FunctionComponent<Props> = (props) => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<CreateEmployee>();
+    const isEditMode = props.selectedEmployeeId !== -1;
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<CreateEmployee>();
     const queryClient = useQueryClient();
+    useEffect(()=>{
+        console.log("selected id changed")
+        if (isEditMode){
+            let editedEmployee;
+            for (let index = 0; index < props.employees.length; index++) {
+                if (props.employees[index]!.id === props.selectedEmployeeId){
+                    editedEmployee = props.employees[index]!
+                    break
+                }
+                
+            }
+            reset({fullName:editedEmployee?.fullName, email:editedEmployee?.email, phoneNumber:editedEmployee?.phoneNumber, address:editedEmployee?.address})
+        } else {
+            reset({fullName:"", email:"", phoneNumber:"", address:""})
+        }
+    },[props.selectedEmployeeId])
     
 
     const addEmployee = useMutation((data:CreateEmployee) => {

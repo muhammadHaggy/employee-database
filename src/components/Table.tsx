@@ -7,6 +7,7 @@ import fetcher from "../utils/fetcher"
 interface Props {
     data: Employee[],
     deleteEmployee: (a:number)=> void;
+    editEmployeeById: (a:number)=>void;
 }
 interface RowData {
     id:number,
@@ -15,7 +16,8 @@ interface RowData {
     address: string,
     phoneNumber: string
 }
-export const Table = ({ data, deleteEmployee }: Props) =>{
+export const Table = ({ data, deleteEmployee, editEmployeeById }: Props) =>{
+    
     const Row = ({ name, email, address, phoneNumber, id }: RowData) =>
     <tr>
         <td className="px-6 py-3 text-base">{name}</td>
@@ -23,7 +25,7 @@ export const Table = ({ data, deleteEmployee }: Props) =>{
         <td className="px-6 py-3 text-base">{address}</td>
         <td className="px-6 py-3 text-base">{phoneNumber}</td>
         <td className="px-6 py-3">
-            <button type="button" className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-xs px-3 py-1 mr-2 mb-2"><EditIcon fontSize='small' /></button>
+            <button onClick={()=>editEmployeeById(id)} type="button" className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-xs px-3 py-1 mr-2 mb-2"><EditIcon fontSize='small' /></button>
             <br className="block lg:hidden" />
             <button onClick={()=>deleteEmployee(id)} type="button" className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-red-800 focus:ring-4 focus:ring-red-200 font-medium rounded-lg text-xs px-3 py-1 mr-2 mb-2"><DeleteIcon fontSize='small' /></button>
 

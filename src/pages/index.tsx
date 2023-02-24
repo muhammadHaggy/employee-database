@@ -15,6 +15,7 @@ const Home: NextPage = () => {
   const [isDisplayModal, setDisplayModal] = useState(false);
   const { isLoading, error, data } = useQuery('employeesData', (): Promise<Employee[]> => fetch(APIBASEURL + 'employees').then(res => res.json()))
   const queryClient = useQueryClient()
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState<number>(-1);
   const deleteEmployee = useMutation((id: number) => {
     return fetcher(APIBASEURL + 'employees' + `/${id}`, {
       method: 'DELETE',
@@ -26,14 +27,24 @@ const Home: NextPage = () => {
     return <h1>Error</h1>
   }
 
+  const editEmployee = (id: number) => {
+    setSelectedEmployeeId(id)
+    setDisplayModal(true)
+  }
+
+  const createEmployee = () => {
+    setSelectedEmployeeId(-1)
+    setDisplayModal(true)
+  }
+
   return (
     <>
-      <Modal isDisplay={isDisplayModal} setDisplay={(isDisplay: boolean) => setDisplayModal(isDisplay)} />
+      {!isLoading && <Modal selectedEmployeeId={selectedEmployeeId} employees={data!} isDisplay={isDisplayModal} setDisplay={(isDisplay: boolean) => setDisplayModal(isDisplay)} />}
       <Layout>
-        <Header setDisplayModal={(isDisplay: boolean) => setDisplayModal(isDisplay)} />
+        <Header createEmployee={createEmployee} />
         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
         {isLoading && <h1>Loading ...</h1>}
-        {!isLoading && <Table deleteEmployee={(id) => deleteEmployee.mutate(id)} data={data!} />}
+        {!isLoading && <Table editEmployeeById={editEmployee} deleteEmployee={(id) => deleteEmployee.mutate(id)} data={data!} />}
       </Layout>
     </>
   );
